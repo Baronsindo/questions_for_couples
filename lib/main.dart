@@ -43,10 +43,10 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      // appBar: AppBar(
-      //   title: Center(child: Text('Page title')),
-      //   backgroundColor: Color(0xFFffd7e7),
-      // ),
+      appBar: AppBar(
+        title: Center(child: Text('Questions For Couples')),
+        backgroundColor: Color(0xFFF53982),
+      ),
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
@@ -77,7 +77,8 @@ class _MyHomePageState extends State<MyHomePage> {
                       color: Color(0xFFF53982),
                     ),
                     Text(
-                      "Hello",
+                      "Get \n a Question",
+                      textAlign: TextAlign.center,
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 30,
