@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:questions_for_couples/widgets/tag_buttons.dart';
 
 void main() {
   runApp(MyApp());
@@ -35,58 +36,59 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  void search() {
+    print(TagButtons.checked);
+  }
+
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      body: Column(
-        children: [
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: GridView.count(
-                crossAxisCount: 3,
-                crossAxisSpacing: 15,
-                mainAxisSpacing: 15,
-                children: [
-                  ElevatedButton(
-                    onPressed: null,
-                    child: Text("Hii"),
-                  ),
-                  ElevatedButton(
-                    onPressed: null,
-                    child: Text("Hii"),
-                  ),
-                  ElevatedButton(
-                    onPressed: null,
-                    child: Text("Hii"),
-                  )
-                ],
-              ),
+      // appBar: AppBar(
+      //   title: Center(child: Text('Page title')),
+      //   backgroundColor: Color(0xFFffd7e7),
+      // ),
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+              colors: [
+                const Color(0xFF96507F),
+                const Color(0xFF0F0A2D),
+              ],
+              begin: const FractionalOffset(0.0, 1.0),
+              end: const FractionalOffset(1.0, 0.0),
+              stops: [0.0, 1.0],
+              tileMode: TileMode.clamp),
+        ),
+        child: Column(
+          children: [
+            SizedBox(
+              height: 20,
             ),
-          ),
-          Expanded(
-            child: Center(
-              child: Stack(
-                alignment: Alignment.center,
-                children: [
-                  IconButton(
-                    onPressed: () => {},
-                    icon: Icon(Icons.favorite),
-                    iconSize: 300,
-                    color: Colors.red,
-                  ),
-                  Text(
-                    "Hello",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 30,
+            TagButtons(),
+            Expanded(
+              child: Center(
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    IconButton(
+                      onPressed: () => {search()},
+                      icon: Icon(Icons.favorite),
+                      iconSize: 300,
+                      color: Color(0xFFF53982),
                     ),
-                  ),
-                ],
+                    Text(
+                      "Hello",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 30,
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-          )
-        ],
+            )
+          ],
+        ),
       ),
     );
   }
