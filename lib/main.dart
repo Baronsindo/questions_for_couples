@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:questions_for_couples/widgets/tag_buttons.dart';
+import 'package:flutter/services.dart';
+import 'package:questions_for_couples/tools/database_hepler.dart';
+import 'package:sqflite/sqflite.dart';
 
 void main() {
   runApp(MyApp());
@@ -36,8 +39,37 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  var db = new DatabaseHelper();
   void search() {
     print(TagButtons.checked);
+    db.getRandomQuestion().then((value) => {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) => AlertDialog(
+              title: Text('The Question is '),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(value[0].text),
+                ],
+              ),
+              actions: [
+                ElevatedButton(
+                  onPressed: () {
+                    Clipboard.setData(new ClipboardData(text: "Your Copy text"))
+                        .then((_) {
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text('Copied to your clipboard !')));
+                    });
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text('Copy & close'),
+                ),
+              ],
+            ),
+          )
+        });
   }
 
   @override
@@ -76,12 +108,15 @@ class _MyHomePageState extends State<MyHomePage> {
                       iconSize: 300,
                       color: Color(0xFFF53982),
                     ),
-                    Text(
-                      "Get \n a Question",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 30,
+                    GestureDetector(
+                      onTap: () => {search()},
+                      child: Text(
+                        "Get \n a Question",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 30,
+                        ),
                       ),
                     ),
                   ],
