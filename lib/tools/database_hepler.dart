@@ -1,3 +1,5 @@
+import 'dart:developer';
+import "dart:math";
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:path/path.dart';
@@ -6,6 +8,7 @@ import 'dart:io';
 import 'package:flutter/services.dart';
 import 'dart:typed_data';
 import 'package:questions_for_couples/tools/app_constant.dart';
+import 'package:questions_for_couples/models/Question.dart';
 
 class DatabaseHelper {
   static final DatabaseHelper _instance = new DatabaseHelper.internal();
@@ -25,7 +28,7 @@ class DatabaseHelper {
   refreshDb(path) async {
     bool idDb = await File(path).exists();
 
-    if (!idDb) {
+    if (true) {
       // delete existing if any
       await deleteDatabase(path);
 
@@ -75,16 +78,29 @@ class DatabaseHelper {
 
     return question;
   }
-}
 
-class Question {
-  int id;
-  String text;
-  String tags;
+  Future<List<Question>> getQuestionByTag(tags) async {
+    var dbClient = await db;
+    String idQuery = 'select id from questions ' + tags;
+    List<Map> listId = await dbClient.rawQuery(idQuery);
+    print("****************");
+    print(idQuery);
+    print("****************");
+    var chosen = listId[Random().nextInt(listId.length - 1)];
+    var chosenId = chosen['id'];
+    String query = 'select * from questions where id= $chosenId';
+    List<Map> list = await dbClient.rawQuery(query);
 
-  Question({
-    required this.id,
-    required this.text,
-    required this.tags,
-  });
+    List<Question> question = [];
+
+    list.forEach((e) {
+      question.add(new Question(
+        id: e["id"],
+        text: e["text"],
+        tags: e["tags"],
+      ));
+    });
+
+    return question;
+  }
 }

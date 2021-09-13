@@ -3,6 +3,7 @@ import 'package:questions_for_couples/widgets/tag_buttons.dart';
 import 'package:flutter/services.dart';
 import 'package:questions_for_couples/tools/database_hepler.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:questions_for_couples/models/Tag.dart';
 
 void main() {
   runApp(MyApp());
@@ -41,35 +42,44 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   var db = new DatabaseHelper();
   void search() {
-    print(TagButtons.checked);
-    db.getRandomQuestion().then((value) => {
-          showDialog(
-            context: context,
-            builder: (BuildContext context) => AlertDialog(
-              title: Text('The Question is '),
-              content: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(value[0].text),
-                ],
-              ),
-              actions: [
-                ElevatedButton(
-                  onPressed: () {
-                    Clipboard.setData(new ClipboardData(text: "Your Copy text"))
-                        .then((_) {
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          content: Text('Copied to your clipboard !')));
-                    });
-                    Navigator.of(context).pop();
-                  },
-                  child: const Text('Copy & close'),
-                ),
-              ],
-            ),
-          )
-        });
+    print(TagButtons.checkedSql);
+    if (TagButtons.checked.length == 0) {
+      db.getRandomQuestion().then((value) => {
+            alertDialogMaker(value[0].text),
+          });
+    } else {
+      db.getQuestionByTag(TagButtons.checkedSql).then((value) => {
+            alertDialogMaker(value[0].text),
+          });
+    }
+  }
+
+  void alertDialogMaker(message) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: Text('The Question is '),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(message),
+          ],
+        ),
+        actions: [
+          ElevatedButton(
+            onPressed: () {
+              Clipboard.setData(new ClipboardData(text: message)).then((_) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Copied to your clipboard !')));
+              });
+              Navigator.of(context).pop();
+            },
+            child: const Text('Copy & close'),
+          ),
+        ],
+      ),
+    );
   }
 
   @override

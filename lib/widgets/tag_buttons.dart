@@ -1,27 +1,22 @@
 import 'package:flutter/material.dart';
-
-class Tag {
-  int id;
-  String text;
-  bool isPressed;
-  Tag({required this.id, required this.text, required this.isPressed});
-}
+import 'package:questions_for_couples/models/Tag.dart';
 
 class TagButtons extends StatefulWidget {
   TagButtons({Key? key}) : super(key: key);
   static List checked = [];
+  static String checkedSql = "";
   @override
   _TagButtonsState createState() => _TagButtonsState();
 }
 
 class _TagButtonsState extends State<TagButtons> {
   var tag_list = [
-    new Tag(id: 1, text: "Adil", isPressed: false),
-    new Tag(id: 1, text: "Ali", isPressed: false),
-    new Tag(id: 1, text: "Khadija", isPressed: false),
-    new Tag(id: 1, text: "Nada", isPressed: false),
-    new Tag(id: 1, text: "Kimo", isPressed: false),
-    new Tag(id: 1, text: "youssef", isPressed: false),
+    new Tag(id: 1, value: "favorite", text: "favorite", isPressed: false),
+    new Tag(id: 1, value: "sex", text: "sex", isPressed: false),
+    new Tag(id: 1, value: "relationships", text: "relations", isPressed: false),
+    new Tag(id: 1, value: "marriage", text: "marriage", isPressed: false),
+    new Tag(id: 1, value: "future", text: "future", isPressed: false),
+    new Tag(id: 1, value: "self", text: "self", isPressed: false),
   ];
 
   @override
@@ -32,24 +27,34 @@ class _TagButtonsState extends State<TagButtons> {
       setState(() {
         but.isPressed = !but.isPressed;
       });
-      TagButtons.checked =
-          tag_list.where((element) => element.isPressed == true).toList();
+
+      TagButtons.checked = [];
+      TagButtons.checkedSql = "where tags LIKE";
+      tag_list
+          .where((element) => element.isPressed == true)
+          .toList()
+          .forEach((element) {
+        TagButtons.checked.add("%" + element.value + "%");
+        TagButtons.checkedSql += " '%" + element.value + "%' or tags LIKE";
+      });
+      TagButtons.checkedSql += " '%i lova nada%' ";
+      //TagButtons.checked =    ;
     }
 
-    tag_list.forEach((tag_list_item) {
+    tag_list.forEach((tagListItem) {
       elevatedButtonList.add(Container(
         width: MediaQuery.of(context).size.width * 0.3,
         child: ElevatedButton(
           onPressed: () => {
-            tagClick(tag_list_item),
+            tagClick(tagListItem),
           },
-          child: Text(tag_list_item.text),
+          child: Text(tagListItem.text),
           style: ElevatedButton.styleFrom(
-            primary: tag_list_item.isPressed
+            primary: tagListItem.isPressed
                 ? const Color(0xFF96507F)
                 : const Color(0xFFABB8CE),
-            onPrimary: tag_list_item.isPressed ? Colors.white : Colors.black,
-            onSurface: tag_list_item.isPressed ? Colors.grey : Colors.black,
+            onPrimary: tagListItem.isPressed ? Colors.white : Colors.black,
+            onSurface: tagListItem.isPressed ? Colors.grey : Colors.black,
           ),
         ),
       ));
