@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:questions_for_couples/tools/database_hepler.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:questions_for_couples/models/Tag.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 void main() {
   runApp(MyApp());
@@ -41,8 +42,15 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   var db = new DatabaseHelper();
-  void search() {
+  bool spinerVisibility = false;
+  void search() async {
     print(TagButtons.checkedSql);
+    setState(() {
+      spinerVisibility = true;
+    });
+
+    await Future.delayed(Duration(seconds: 2));
+
     if (TagButtons.checked.length == 0) {
       db.getRandomQuestion().then((value) => {
             alertDialogMaker(value[0].text),
@@ -74,6 +82,10 @@ class _MyHomePageState extends State<MyHomePage> {
                     SnackBar(content: Text('Copied to your clipboard !')));
               });
               Navigator.of(context).pop();
+
+              setState(() {
+                spinerVisibility = false;
+              });
             },
             child: const Text('Copy & close'),
           ),
@@ -89,52 +101,71 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Center(child: Text('Questions For Couples')),
         backgroundColor: Color(0xFFF53982),
       ),
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-              colors: [
-                const Color(0xFF96507F),
-                const Color(0xFF0F0A2D),
-              ],
-              begin: const FractionalOffset(0.0, 1.0),
-              end: const FractionalOffset(1.0, 0.0),
-              stops: [0.0, 1.0],
-              tileMode: TileMode.clamp),
-        ),
-        child: Column(
-          children: [
-            SizedBox(
-              height: 20,
-            ),
-            TagButtons(),
-            Expanded(
-              child: Center(
-                child: Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    IconButton(
-                      onPressed: () => {search()},
-                      icon: Icon(Icons.favorite),
-                      iconSize: 300,
-                      color: Color(0xFFF53982),
-                    ),
-                    GestureDetector(
-                      onTap: () => {search()},
-                      child: Text(
-                        "Get \n a Question",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 30,
-                        ),
-                      ),
-                    ),
+      body: Stack(
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                  colors: [
+                    const Color(0xFF96507F),
+                    const Color(0xFF0F0A2D),
                   ],
+                  begin: const FractionalOffset(0.0, 1.0),
+                  end: const FractionalOffset(1.0, 0.0),
+                  stops: [0.0, 1.0],
+                  tileMode: TileMode.clamp),
+            ),
+            child: Column(
+              children: [
+                SizedBox(
+                  height: 20,
                 ),
-              ),
-            )
-          ],
-        ),
+                TagButtons(),
+                Expanded(
+                  child: Center(
+                    child: Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        IconButton(
+                          onPressed: () => {search()},
+                          icon: Icon(Icons.favorite),
+                          iconSize: 300,
+                          color: Color(0xFFF53982),
+                        ),
+                        GestureDetector(
+                          onTap: () => {search()},
+                          child: Text(
+                            "Get \n a Question",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 30,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                )
+              ],
+            ),
+          ),
+          Visibility(
+            visible: spinerVisibility,
+            child: Container(
+              color: Color(0xFFABB8CE),
+              child: SpinKitFoldingCube(itemBuilder: (_, int index) {
+                return DecoratedBox(
+                  decoration: BoxDecoration(
+                    color: index.isEven
+                        ? const Color(0xFFF53982)
+                        : const Color(0xFF96507F),
+                  ),
+                );
+              }),
+            ),
+          )
+        ],
       ),
     );
   }
