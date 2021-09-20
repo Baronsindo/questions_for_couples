@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:questions_for_couples/tools/app_constant.dart';
 import 'package:questions_for_couples/widgets/tag_buttons.dart';
 import 'package:flutter/services.dart';
 import 'package:questions_for_couples/tools/database_hepler.dart';
@@ -17,17 +18,17 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: Colors.blue,
-      ),
+          // This is the theme of your application.
+          //
+          // Try running your application with "flutter run". You'll see the
+          // application has a blue toolbar. Then, without quitting the app, try
+          // changing the primarySwatch below to Colors.green and then invoke
+          // "hot reload" (press "r" in the console where you ran "flutter run",
+          // or simply save your changes to "hot reload" in a Flutter IDE).
+          // Notice that the counter didn't reset back to zero; the application
+          // is not restarted.
+          // primarySwatch: AppConstant.clicked_button,
+          ),
       home: MyHomePage(),
     );
   }
@@ -60,34 +61,64 @@ class _MyHomePageState extends State<MyHomePage> {
             alertDialogMaker(value[0].text),
           });
     }
+    setState(() {
+      spinerVisibility = false;
+    });
   }
 
   void alertDialogMaker(message) {
     showDialog(
       context: context,
       builder: (BuildContext context) => AlertDialog(
-        title: Text('The Question is '),
         content: Column(
           mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
+          // crossAxisAlignment: CrossAxisAlignment.start,
+
           children: [
-            Text(message),
+            Center(child: Text(message)),
           ],
         ),
         actions: [
-          ElevatedButton(
-            onPressed: () {
-              Clipboard.setData(new ClipboardData(text: message)).then((_) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('Copied to your clipboard !')));
-              });
-              Navigator.of(context).pop();
+          Padding(
+            padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+            child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      primary: AppConstant.close_button,
+                    ),
+                    onPressed: () {
+                      Navigator.of(context).pop();
 
-              setState(() {
-                spinerVisibility = false;
-              });
-            },
-            child: const Text('Copy & close'),
+                      setState(() {
+                        spinerVisibility = false;
+                      });
+                    },
+                    child: const Text('Close'),
+                  ),
+                  SizedBox(
+                    width: 20,
+                  ),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      primary: AppConstant.copy_button,
+                    ),
+                    onPressed: () {
+                      Clipboard.setData(new ClipboardData(text: message))
+                          .then((_) {
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: Text('Copied to your clipboard !')));
+                      });
+                      Navigator.of(context).pop();
+
+                      setState(() {
+                        spinerVisibility = false;
+                      });
+                    },
+                    child: const Text('Copy'),
+                  ),
+                ]),
           ),
         ],
       ),
@@ -104,19 +135,18 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Stack(
         children: [
           Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                  colors: [
-                    const Color(0xFF96507F),
-                    const Color(0xFF0F0A2D),
-                  ],
-                  begin: const FractionalOffset(0.0, 1.0),
-                  end: const FractionalOffset(1.0, 0.0),
-                  stops: [0.0, 1.0],
-                  tileMode: TileMode.clamp),
-            ),
+            color: Colors.white,
             child: Column(
               children: [
+                SizedBox(
+                  height: 40,
+                ),
+                Center(
+                  child: Text(
+                    "------------ Chose a category ------------",
+                    style: TextStyle(color: AppConstant.label),
+                  ),
+                ),
                 SizedBox(
                   height: 20,
                 ),
@@ -130,7 +160,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           onPressed: () => {search()},
                           icon: Icon(Icons.favorite),
                           iconSize: 300,
-                          color: Color(0xFFF53982),
+                          color: AppConstant.main,
                         ),
                         GestureDetector(
                           onTap: () => {search()},
@@ -138,7 +168,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             "Get \n a Question",
                             textAlign: TextAlign.center,
                             style: TextStyle(
-                              color: Colors.white,
+                              color: AppConstant.clicked_button_text,
                               fontSize: 30,
                             ),
                           ),
@@ -153,13 +183,11 @@ class _MyHomePageState extends State<MyHomePage> {
           Visibility(
             visible: spinerVisibility,
             child: Container(
-              color: Color(0xFFABB8CE),
+              color: AppConstant.clicked_button_text,
               child: SpinKitFoldingCube(itemBuilder: (_, int index) {
                 return DecoratedBox(
                   decoration: BoxDecoration(
-                    color: index.isEven
-                        ? const Color(0xFFF53982)
-                        : const Color(0xFF96507F),
+                    color: index.isEven ? AppConstant.main : AppConstant.info,
                   ),
                 );
               }),

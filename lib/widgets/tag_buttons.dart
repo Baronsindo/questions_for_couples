@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:questions_for_couples/models/Tag.dart';
+import 'package:questions_for_couples/tools/app_constant.dart';
 
 class TagButtons extends StatefulWidget {
   TagButtons({Key? key}) : super(key: key);
@@ -11,12 +12,12 @@ class TagButtons extends StatefulWidget {
 
 class _TagButtonsState extends State<TagButtons> {
   var tag_list = [
-    new Tag(id: 1, value: "favorite", text: "favorite", isPressed: false),
-    new Tag(id: 1, value: "sex", text: "sex", isPressed: false),
-    new Tag(id: 1, value: "relationships", text: "relations", isPressed: false),
-    new Tag(id: 1, value: "marriage", text: "marriage", isPressed: false),
-    new Tag(id: 1, value: "future", text: "future", isPressed: false),
-    new Tag(id: 1, value: "self", text: "self", isPressed: false),
+    new Tag(id: 1, value: "self", text: "Self", isPressed: false),
+    new Tag(id: 1, value: "relationships", text: "Relations", isPressed: false),
+    new Tag(id: 1, value: "favorite", text: "Favorite", isPressed: false),
+    new Tag(id: 1, value: "marriage", text: "Marriage", isPressed: false),
+    new Tag(id: 1, value: "future", text: "Future", isPressed: false),
+    new Tag(id: 1, value: "sex", text: "Sex", isPressed: false),
   ];
 
   @override
@@ -43,18 +44,27 @@ class _TagButtonsState extends State<TagButtons> {
 
     tag_list.forEach((tagListItem) {
       elevatedButtonList.add(Container(
-        width: MediaQuery.of(context).size.width * 0.3,
+        width: MediaQuery.of(context).size.width * 0.27,
         child: ElevatedButton(
           onPressed: () => {
             tagClick(tagListItem),
           },
-          child: Text(tagListItem.text),
+          child: Text(
+            tagListItem.text,
+            style: TextStyle(
+              fontSize: 12,
+            ),
+          ),
           style: ElevatedButton.styleFrom(
             primary: tagListItem.isPressed
-                ? const Color(0xFF96507F)
-                : const Color(0xFFABB8CE),
-            onPrimary: tagListItem.isPressed ? Colors.white : Colors.black,
-            onSurface: tagListItem.isPressed ? Colors.grey : Colors.black,
+                ? AppConstant.clicked_button
+                : AppConstant.button,
+            onPrimary: tagListItem.isPressed
+                ? AppConstant.clicked_button_text
+                : AppConstant.button_text,
+            // onSurface: tagListItem.isPressed
+            //     ? AppConstant.clicked_button
+            //     : AppConstant.clicked_button,
           ),
         ),
       ));
