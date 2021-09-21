@@ -5,6 +5,8 @@ import 'package:flutter/services.dart';
 import 'package:questions_for_couples/tools/database_hepler.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:decorated_icon/decorated_icon.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:questions_for_couples/tools/ad_helper.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key}) : super(key: key);
@@ -14,6 +16,10 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
+  //? variables for ads
+  late BannerAd _bannerAd;
+  bool _isBannerAdReady = false;
+
   var db = new DatabaseHelper();
   bool spinerVisibility = false;
   late AnimationController _controller;
@@ -26,6 +32,27 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
     _controller = AnimationController(
         duration: const Duration(milliseconds: 1200), vsync: this);
     _controller.repeat(reverse: true);
+
+    //? init ads
+    _bannerAd = BannerAd(
+      adUnitId: AdHelper.bannerAdUnitId,
+      request: AdRequest(),
+      size: AdSize.banner,
+      listener: BannerAdListener(
+        onAdLoaded: (_) {
+          setState(() {
+            _isBannerAdReady = true;
+          });
+        },
+        onAdFailedToLoad: (ad, err) {
+          print('Failed to load a banner ad: ${err.message}');
+          _isBannerAdReady = false;
+          ad.dispose();
+        },
+      ),
+    );
+
+    _bannerAd.load();
   }
 
   void search() async {
@@ -185,7 +212,13 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                       ),
                     ),
                   ),
-                )
+                ),
+                Container(
+                  // TODO : Testi hada f device lakhor
+                  width: _bannerAd.size.width.toDouble(),
+                  height: _bannerAd.size.height.toDouble(),
+                  child: AdWidget(ad: _bannerAd),
+                ),
               ],
             ),
           ),

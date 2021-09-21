@@ -2,15 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:questions_for_couples/tools/app_constant.dart';
 import 'package:splash_screen_view/SplashScreenView.dart';
 import 'package:questions_for_couples/screens/HomePage.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 void main() {
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
+  Future<InitializationStatus> _initGoogleMobileAds() {
+    // TODO: Initialize Google Mobile Ads SDK
+    return MobileAds.instance.initialize();
+  }
+
   @override
   Widget build(BuildContext context) {
+    _initGoogleMobileAds();
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
