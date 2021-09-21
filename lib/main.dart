@@ -56,9 +56,21 @@ class MyHomePage extends StatefulWidget {
   _MyHomePageState createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   var db = new DatabaseHelper();
   bool spinerVisibility = false;
+  late AnimationController _controller;
+  Tween<double> _tween = Tween(begin: 0.9, end: 0.95);
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _controller = AnimationController(
+        duration: const Duration(milliseconds: 1200), vsync: this);
+    _controller.repeat(reverse: true);
+  }
+
   void search() async {
     print(TagButtons.checkedSql);
     setState(() {
@@ -176,38 +188,39 @@ class _MyHomePageState extends State<MyHomePage> {
                 TagButtons(),
                 Expanded(
                   child: Center(
-                    child: Stack(
-                      alignment: Alignment.center,
-                      children: [
-                        DecoratedIcon(
-                          Icons.favorite,
-                          color: AppConstant.main,
-                          size: 300,
-                          shadows: [
-                            BoxShadow(
-                              offset: const Offset(3.0, 3.0),
-                              // blurRadius: 2.0,
-                              color: Colors.grey,
+                    child: GestureDetector(
+                      onTap: () => {search()},
+                      child: ScaleTransition(
+                        scale: _tween.animate(
+                          CurvedAnimation(
+                              parent: _controller, curve: Curves.fastOutSlowIn),
+                        ),
+                        child: Stack(
+                          alignment: AlignmentDirectional.center,
+                          children: [
+                            DecoratedIcon(
+                              Icons.favorite,
+                              color: AppConstant.main,
+                              size: 300,
+                              shadows: [
+                                BoxShadow(
+                                  offset: const Offset(3.0, 3.0),
+                                  // blurRadius: 2.0,
+                                  color: Colors.grey,
+                                ),
+                              ],
                             ),
-                            // BoxShadow(
-                            //   blurRadius: 12.0,
-                            //   color: Colors.green,
-                            //   offset: Offset(0, 6.0),
-                            // ),
+                            Text(
+                              "Get \n a Question",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: AppConstant.clicked_button_text,
+                                fontSize: 30,
+                              ),
+                            ),
                           ],
                         ),
-                        GestureDetector(
-                          onTap: () => {search()},
-                          child: Text(
-                            "Get \n a Question",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: AppConstant.clicked_button_text,
-                              fontSize: 30,
-                            ),
-                          ),
-                        ),
-                      ],
+                      ),
                     ),
                   ),
                 )
