@@ -6,6 +6,7 @@ import 'package:questions_for_couples/tools/database_hepler.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:questions_for_couples/models/Tag.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:splash_screen_view/SplashScreenView.dart';
 
 void main() {
   runApp(MyApp());
@@ -31,7 +32,18 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         // primarySwatch: AppConstant.clicked_button,
       ),
-      home: MyHomePage(),
+      home: SplashScreenView(
+        navigateRoute: MyHomePage(),
+        duration: 30000,
+        imageSize: 165,
+        imageSrc: "assets/images/splash_logo.png",
+        backgroundColor: AppConstant.main,
+        text: "QueMe",
+        textStyle: TextStyle(
+          fontSize: 30,
+          color: Colors.white,
+        ),
+      ),
     );
   }
 }
