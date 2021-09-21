@@ -7,6 +7,7 @@ import 'package:sqflite/sqflite.dart';
 import 'package:questions_for_couples/models/Tag.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:splash_screen_view/SplashScreenView.dart';
+import 'package:decorated_icon/decorated_icon.dart';
 
 void main() {
   runApp(MyApp());
@@ -34,7 +35,7 @@ class MyApp extends StatelessWidget {
       ),
       home: SplashScreenView(
         navigateRoute: MyHomePage(),
-        duration: 30000,
+        duration: 3000,
         imageSize: 165,
         imageSrc: "assets/images/splash_logo.png",
         backgroundColor: AppConstant.main,
@@ -157,7 +158,7 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Stack(
         children: [
           Container(
-            color: Colors.white,
+            // color: Colors.white,
             child: Column(
               children: [
                 SizedBox(
@@ -178,11 +179,22 @@ class _MyHomePageState extends State<MyHomePage> {
                     child: Stack(
                       alignment: Alignment.center,
                       children: [
-                        IconButton(
-                          onPressed: () => {search()},
-                          icon: Icon(Icons.favorite),
-                          iconSize: 300,
+                        DecoratedIcon(
+                          Icons.favorite,
                           color: AppConstant.main,
+                          size: 300,
+                          shadows: [
+                            BoxShadow(
+                              offset: const Offset(3.0, 3.0),
+                              // blurRadius: 2.0,
+                              color: Colors.grey,
+                            ),
+                            // BoxShadow(
+                            //   blurRadius: 12.0,
+                            //   color: Colors.green,
+                            //   offset: Offset(0, 6.0),
+                            // ),
+                          ],
                         ),
                         GestureDetector(
                           onTap: () => {search()},
