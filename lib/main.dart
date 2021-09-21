@@ -60,7 +60,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   var db = new DatabaseHelper();
   bool spinerVisibility = false;
   late AnimationController _controller;
-  Tween<double> _tween = Tween(begin: 0.9, end: 0.95);
+  Tween<double> _tween = Tween(begin: 0.85, end: 0.9);
 
   @override
   void initState() {
@@ -82,15 +82,18 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
     if (TagButtons.checked.length == 0) {
       db.getRandomQuestion().then((value) => {
             alertDialogMaker(value[0].text),
+            setState(() {
+              spinerVisibility = false;
+            })
           });
     } else {
       db.getQuestionByTag(TagButtons.checkedSql).then((value) => {
             alertDialogMaker(value[0].text),
+            setState(() {
+              spinerVisibility = false;
+            })
           });
     }
-    setState(() {
-      spinerVisibility = false;
-    });
   }
 
   void alertDialogMaker(message) {
@@ -161,7 +164,6 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
             'Questions For Couples',
             style: TextStyle(
               fontFamily: "Ubuntu",
-              fontWeight: FontWeight.bold,
             ),
           ),
         ),
@@ -170,7 +172,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
       body: Stack(
         children: [
           Container(
-            // color: Colors.white,
+            color: Colors.white,
             child: Column(
               children: [
                 SizedBox(
@@ -178,8 +180,11 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                 ),
                 Center(
                   child: Text(
-                    "------------ Chose a category ------------",
-                    style: TextStyle(color: AppConstant.label),
+                    "--------   Chose a category   --------",
+                    style: TextStyle(
+                      color: AppConstant.label,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
                 SizedBox(
@@ -211,11 +216,11 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                               ],
                             ),
                             Text(
-                              "Get \n a Question",
+                              "?",
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 color: AppConstant.clicked_button_text,
-                                fontSize: 30,
+                                fontSize: 160,
                               ),
                             ),
                           ],
@@ -231,13 +236,17 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
             visible: spinerVisibility,
             child: Container(
               color: AppConstant.clicked_button_text,
-              child: SpinKitFoldingCube(itemBuilder: (_, int index) {
-                return DecoratedBox(
-                  decoration: BoxDecoration(
-                    color: index.isEven ? AppConstant.main : AppConstant.info,
-                  ),
-                );
-              }),
+              child: SpinKitFoldingCube(
+                  size: 120.0,
+                  itemBuilder: (_, int index) {
+                    return DecoratedBox(
+                      decoration: BoxDecoration(
+                        color: index.isEven
+                            ? AppConstant.main
+                            : AppConstant.copy_button,
+                      ),
+                    );
+                  }),
             ),
           )
         ],
