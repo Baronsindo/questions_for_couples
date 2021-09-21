@@ -11,7 +11,7 @@ class TagButtons extends StatefulWidget {
 }
 
 class _TagButtonsState extends State<TagButtons> {
-  var tag_list = [
+  var tagList = [
     new Tag(id: 1, value: "self", text: "Self", isPressed: false),
     new Tag(id: 1, value: "relationships", text: "Relations", isPressed: false),
     new Tag(id: 1, value: "favorite", text: "Favorite", isPressed: false),
@@ -31,7 +31,7 @@ class _TagButtonsState extends State<TagButtons> {
 
       TagButtons.checked = [];
       TagButtons.checkedSql = "where tags LIKE";
-      tag_list
+      tagList
           .where((element) => element.isPressed == true)
           .toList()
           .forEach((element) {
@@ -42,7 +42,7 @@ class _TagButtonsState extends State<TagButtons> {
       //TagButtons.checked =    ;
     }
 
-    tag_list.forEach((tagListItem) {
+    tagList.forEach((tagListItem) {
       elevatedButtonList.add(Container(
         width: MediaQuery.of(context).size.width * 0.27,
         child: ElevatedButton(
