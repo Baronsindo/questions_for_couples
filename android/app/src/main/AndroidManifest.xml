@@ -2,7 +2,7 @@
     package="com.morocoder.QuestionsForCouples">
    <application
         android:label="questions_for_couples"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/launcher_icon">
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
