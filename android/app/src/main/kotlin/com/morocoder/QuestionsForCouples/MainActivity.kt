@@ -1,4 +1,4 @@
-package com.example.questions_for_couples
+package com.morocoder.QuestionsForCouples
 
 import io.flutter.embedding.android.FlutterActivity
 

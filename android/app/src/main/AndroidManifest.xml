@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.questions_for_couples">
+    package="com.morocoder.QuestionsForCouples">
    <application
         android:label="questions_for_couples"
         android:icon="@mipmap/ic_launcher">
