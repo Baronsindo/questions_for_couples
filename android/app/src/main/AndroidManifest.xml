@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.morocoder.QuestionsForCouples">
    <application
-        android:label="questions_for_couples"
+        android:label="QueMe : questions_for_couples"
         android:icon="@mipmap/launcher_icon">
         <activity
             android:name=".MainActivity"
